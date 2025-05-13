@@ -29,16 +29,17 @@ while True:
             frame = result.plot()
 
             # Plot the tracks
-            for box, track_id in zip(boxes, track_ids):
-                x, y, w, h = box
-                track = track_history[track_id]
-                track.append((float(x), float(y)))  # x, y center point
-                if len(track) > 30:  # retain 30 tracks for 30 frames
-                    track.pop(0)
+            if cls == 0:
+                for box, track_id in zip(boxes, track_ids):
+                    x, y, w, h = box
+                    track = track_history[track_id]
+                    track.append((float(x), float(y)))  # x, y center point
+                    if len(track) > 30:  # retain 30 tracks for 30 frames
+                        track.pop(0)
 
-                # Draw the tracking lines
-                points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
-                cv2.polylines(frame, [points], isClosed=False, color=(230, 230, 230), thickness=10)
+                    # Draw the tracking lines
+                    points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
+                    cv2.polylines(frame, [points], isClosed=False, color=(230, 230, 230), thickness=10)
 
         # Display the annotated frame
         cv2.imshow("YOLO11 Tracking", frame)
