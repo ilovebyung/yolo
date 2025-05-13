@@ -7,7 +7,8 @@ import cv2
 import matplotlib.pyplot as plt
 
 # 1. Choose your YOLO model
-MODEL_PATH = "yolo11s.pt" # <--- CHANGE THIS  
+# MODEL_PATH = "yolo11s.pt" # <--- CHANGE THIS  
+MODEL_PATH = "yolov8s.pt" # <--- CHANGE THIS  
 
 # 2. Specify the path to your image
 IMAGE_PATH = './images/walking.jpg' # <--- CHANGE THIS
