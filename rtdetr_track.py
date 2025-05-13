@@ -23,6 +23,7 @@ while True:
         if result.boxes.id is not None:
             boxes = result.boxes.xywh.cpu()
             track_ids = result.boxes.id.int().cpu().tolist()
+            cls = result.boxes.cls.int().cpu().tolist()
 
             # Visualize the result on the frame
             frame = result.plot()
@@ -52,5 +53,3 @@ while True:
 # Release the webcam and close all windows
 cap.release()
 cv2.destroyAllWindows()
-
-
