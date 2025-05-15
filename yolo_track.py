@@ -5,28 +5,35 @@ from collections import defaultdict
 
 model = YOLO("yolo11n.pt")
 
-file = 'D02.mp4'
+file = 'd02.mp4'
 cap = cv2.VideoCapture(file)
 
 # Store the track history
 track_history = defaultdict(lambda: [])
 
-
+max_id = 0
+new_id = 0
 while True:
     # Read a frame from the webcam
     ret, frame = cap.read()
     if ret:
         # Run YOLO11 tracking on the frame, persisting tracks between frames
-        result = model.track(frame, persist=True)[0]
+        result = model.track(frame, persist=True, imgsz=(1088, 1920))[0]
 
         # Get the boxes and track IDs
         if result.boxes.id is not None:
             boxes = result.boxes.xywh.cpu()
             track_ids = result.boxes.id.int().cpu().tolist()
+            max_id = max(track_ids)
+            track_cls = result.boxes.cls.int().cpu().tolist()
+
+            ######### save images only when condition is met ###########
+            # if (max_id > new_id) and (0 in track_cls) :
+            ############################################################  
 
             # Visualize the result on the frame
             frame = result.plot()
-
+  
             # Plot the tracks
             for box, track_id in zip(boxes, track_ids):
                 x, y, w, h = box

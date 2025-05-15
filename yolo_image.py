@@ -4,11 +4,12 @@ import cv2
 import matplotlib.pyplot as plt
 
 # 1. Choose your YOLO model
-model = YOLO('yolo11s.pt') # <--- CHANGE THIS  
+model = YOLO('yolov8s.pt') # <--- CHANGE THIS  
 
 # 2. Specify the path to your image
 image = cv2.imread('./images/walking.jpg')
-results = model(source=image)  
+# results = model(source=image)  
+results = model(source=image,imgsz=(1381, 2069),conf=0.5)  
 
 # --- Process Results ---
 print(f"Number of detected objects: {len(results[0])}")

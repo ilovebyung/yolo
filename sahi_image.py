@@ -20,7 +20,7 @@ OVERLAP_HEIGHT_RATIO = 0.2 # Overlap between slices (20%)
 OVERLAP_WIDTH_RATIO = 0.2  # Overlap between slices (20%)
 
 # 4. Detection Confidence Threshold
-CONFIDENCE_THRESHOLD = 0.7
+CONFIDENCE_THRESHOLD = 0.5
 
 # 5. Device ('cpu' or 'cuda:0' etc.)
 DEVICE = 'cuda:0' # Change from 'cpu' to 'cuda:0' if you have a GPU and compatible PyTorch installed
