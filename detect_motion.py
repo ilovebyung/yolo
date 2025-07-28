@@ -1,31 +1,32 @@
 import cv2
 
-# Initialize webcam
+# Initialize the video capture (0 for default camera, or provide a video file path)
 cap = cv2.VideoCapture(0)
 
-# Create MOG2 background subtractor
-fgbg = cv2.createBackgroundSubtractorMOG2()
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+# Create a Background Subtractor using MOG2
+background_subtractor = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=16, detectShadows=True)
 
 while True:
+    # Read a frame from the video capture
     ret, frame = cap.read()
     if not ret:
         break
 
-    # Convert frame to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # Apply background subtraction 
-    fgmask = fgbg.apply(gray)
-    # Apply morphological operations to reduce noise
-    fgmask_cleaned = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
-    # Bitwise AND to isolate moving pixels in grayscale
-    moving_pixels_gray = cv2.bitwise_and(gray, fgmask_cleaned)
+    # Apply the background subtractor to the frame
+    fg_mask = background_subtractor.apply(frame)
 
-    # Display result
-    cv2.imshow("Grayscale Moving Pixels (MOG2)", moving_pixels_gray)
+    # Optional: Apply morphological operations to clean up the mask
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    fg_mask = cv2.morphologyEx(fg_mask, cv2.MORPH_OPEN, kernel)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    # Display the original frame and the foreground mask
+    cv2.imshow('Original Frame', frame)
+    cv2.imshow('Foreground Mask', fg_mask)
+
+    # Break the loop if 'q' is pressed
+    if cv2.waitKey(30) & 0xFF == ord('q'):
         break
 
+# Release the video capture and close all windows
 cap.release()
 cv2.destroyAllWindows()
